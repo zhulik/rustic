@@ -31,6 +31,10 @@ RSpec.describe Rustic::Wrapper do
     end
 
     context "when command not found" do
+      before do
+        allow(Async::Process).to receive(:spawn).with(env_variables, *argv).and_raise(Errno::ENOENT)
+      end
+
       it "raises an exception" do
         expect { subject }.to raise_error(described_class::ExecutionError)
       end
