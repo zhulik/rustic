@@ -1,0 +1,77 @@
+# frozen_string_literal: true
+
+RSpec.describe Rustic::Script::Evaluator do
+  let(:evaluator) { described_class.new(config) }
+  let(:config) { instance_double(Rustic::Script::Config, repository: "./repository", password: "password", restic_path: "restic", on_error: on_error, before: before_hook, after: after_hook, backup_config: backup_config) }
+  let(:wrapper) { instance_double(Rustic::Wrapper, run: true) }
+  let(:on_error) { instance_double(Proc, call: true) }
+  let(:before_hook) { instance_double(Proc, call: true) }
+  let(:after_hook) { instance_double(Proc, call: true) }
+  let(:backup_config) { nil }
+
+  describe "#evaluate" do
+    subject { evaluator.evaluate }
+
+    context "when check wrapper raises an error" do
+      before do
+        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "./repository", "snapshots"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
+        allow(wrapper).to receive(:run).and_raise(Rustic::Wrapper::ExitStatusError)
+      end
+
+      it "raises an exception" do
+        expect { subject }.to raise_error(Rustic::Wrapper::ExitStatusError)
+      end
+
+      it "calls the on_error hook" do
+        begin
+          subject
+        rescue Rustic::Wrapper::ExitStatusError
+          nil
+        end
+        expect(on_error).to have_received(:call)
+      end
+    end
+
+    context "when backup is not configured" do
+      before do
+        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "./repository", "snapshots"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
+      end
+
+      it "does not raise an exception" do
+        expect { subject }.not_to raise_error
+      end
+
+      it "calls before and after hooks" do # rubocop:disable RSpec/MultipleExpectations
+        subject
+        expect(before_hook).to have_received(:call)
+        expect(after_hook).to have_received(:call)
+      end
+    end
+
+    context "when backup configured" do
+      let(:backup_config) { instance_double(Rustic::Script::BackupConfig, before: before_backup_hook, after: after_backup_hook, paths: ["/"], one_fs: true, excluded_paths: []) }
+
+      let(:before_backup_hook) { instance_double(Proc, call: true) }
+      let(:after_backup_hook) { instance_double(Proc, call: true) }
+
+      before do
+        allow(Rustic::Wrapper).to receive(:new).and_return(wrapper)
+      end
+
+      it "does not raise an exception" do
+        expect { subject }.not_to raise_error
+      end
+
+      it "calls Rustic::Wrapper twice" do
+        subject
+        expect(wrapper).to have_received(:run).twice
+      end
+
+      it "calls before and after hooks" do # rubocop:disable RSpec/MultipleExpectations
+        subject
+        expect(before_hook).to have_received(:call)
+        expect(after_hook).to have_received(:call)
+      end
+    end
+  end
+end
