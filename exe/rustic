@@ -4,5 +4,5 @@
 require "rustic"
 
 Async::Reactor.run do
-  Rustic::CLI.new(ARGV).run
+  Rustic::Application.new(ARGV).run
 end

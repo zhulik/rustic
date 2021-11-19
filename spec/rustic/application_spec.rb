@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Rustic::CLI do
+RSpec.describe Rustic::Application do
   let(:cli) { described_class.new(argv) }
 
   describe "#run" do

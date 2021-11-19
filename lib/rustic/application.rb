@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Rustic::CLI
+class Rustic::Application
   def initialize(argv)
     @argv = argv
   end
