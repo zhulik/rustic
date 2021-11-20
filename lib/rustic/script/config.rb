@@ -3,10 +3,11 @@
 class Rustic::Script::Config
   include Rustic::Script::HooksExt
 
-  attr_reader :restic_path, :backup_config
+  attr_reader :restic_path, :backup_config, :strict_validation
 
   def initialize
     @restic_path = "restic"
+    @strict_validation = false
   end
 
   def restic(path)
@@ -40,5 +41,9 @@ class Rustic::Script::Config
   def backup(&block)
     @backup_config ||= Rustic::Script::BackupConfig.new
     @backup_config.instance_eval(&block)
+  end
+
+  def strict_validation!
+    @strict_validation = true
   end
 end
