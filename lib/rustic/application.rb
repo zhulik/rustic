@@ -9,21 +9,7 @@ class Rustic::Application
 
   def run(argv)
     command = argv.first || "backup"
-    command_method = "command_#{command}"
-    return send(command_method) if respond_to?(command_method, true)
-
-    raise UnknownCommandError, "Unknown command #{command}"
-  end
-
-  private
-
-  def command_snapshots
-    command, env = Rustic::Script::CommandBuilder.new("snapshots", @config).build
-    Rustic::Wrapper.new(command, env).run
-  end
-
-  def command_backup
-    command, env = Rustic::Script::CommandBuilder.new("backup", @config).build
+    command, env = Rustic::Script::CommandBuilder.new(command, @config).build
     Rustic::Wrapper.new(command, env).run
   end
 end

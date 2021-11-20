@@ -37,7 +37,7 @@ RSpec/NestedGroups:
   Max: 5
 
 RSpec/MultipleMemoizedHelpers:
-  Max: 9
+  Max: 10
 
 RSpec/ExampleLength:
   Max: 6
