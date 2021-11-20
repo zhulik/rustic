@@ -8,6 +8,10 @@ RSpec.describe Rustic do
   describe "#define" do
     subject { described_class.define(run: run, &config_block) }
 
+    before do
+      allow(File).to receive(:which).with("restic").and_return("/bin/restic")
+    end
+
     let(:config_block) do
       proc do
         repository "repository"

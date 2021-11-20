@@ -64,4 +64,12 @@ RSpec.describe Rustic::Script::Config do
       end.to yield_control.once
     end
   end
+
+  describe "#strict_validation" do
+    it "assigns strict_validation" do
+      expect do
+        config.strict_validation!
+      end.to change(config, :strict_validation).from(false).to(true)
+    end
+  end
 end
