@@ -96,4 +96,18 @@ RSpec.describe Rustic::Config do
       end
     end
   end
+
+  describe "#forget" do
+    it "assigns forget config" do
+      expect do
+        config.forget { "TEST" }
+      end.to change(config, :forget_config).from(nil).to(Rustic::Configs::Forget)
+    end
+
+    it "yields control" do
+      expect do |b|
+        config.forget(&b)
+      end.to yield_control.once
+    end
+  end
 end
