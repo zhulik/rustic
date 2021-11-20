@@ -72,4 +72,28 @@ RSpec.describe Rustic::Script::Config do
       end.to change(config, :strict_validation).from(false).to(true)
     end
   end
+
+  describe "#check" do
+    context "when block is passed" do
+      it "assigns backup config" do
+        expect do
+          config.check { "TEST" }
+        end.to change(config, :check_config).from(nil).to(Rustic::Script::CheckConfig)
+      end
+
+      it "yields control" do
+        expect do |b|
+          config.check(&b)
+        end.to yield_control.once
+      end
+    end
+
+    context "when block is not passed" do
+      it "assigns backup config" do
+        expect do
+          config.check
+        end.to change(config, :check_config).from(nil).to(Rustic::Script::CheckConfig)
+      end
+    end
+  end
 end

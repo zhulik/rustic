@@ -3,9 +3,7 @@
 class Rustic::Script::Evaluator
   include Console
 
-  def initialize(config)
-    @config = config
-  end
+  def initialize(config) = @config = config
 
   def evaluate
     with_hooks(@config) do
@@ -16,9 +14,7 @@ class Rustic::Script::Evaluator
     raise
   end
 
-  def on_error(error)
-    @config.on_error&.call(error)
-  end
+  def on_error(error) = @config.on_error&.call(error)
 
   def backup!
     with_hooks(@config.backup_config) do
@@ -27,7 +23,5 @@ class Rustic::Script::Evaluator
     end
   end
 
-  def with_hooks(config, args = nil, &block)
-    Rustic::Script::Hooks.new(config).with_hooks(args, &block)
-  end
+  def with_hooks(config, args = nil, &block) = Rustic::Script::Hooks.new(config).with_hooks(args, &block)
 end

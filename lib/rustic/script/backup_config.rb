@@ -23,7 +23,5 @@ class Rustic::Script::BackupConfig
     @excluded_paths = paths
   end
 
-  def one_fs!
-    @one_fs = true
-  end
+  def one_fs! = @one_fs = true
 end

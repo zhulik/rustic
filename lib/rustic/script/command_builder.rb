@@ -42,7 +42,6 @@ class Rustic::Script::CommandBuilder
   end
 
   def excludes = ["--exclude"].product(@config.backup_config.excluded_paths).flatten
-
   def command_snapshots = ["snapshots"]
 
   def command_backup
@@ -50,6 +49,30 @@ class Rustic::Script::CommandBuilder
     raise MissingConfigError, "Command `backup` misses it's configuration" if config.nil?
     raise MalformedConfigError, "Backup paths cannot be empty" if config.paths.empty?
 
-    ["backup", config.one_fs ? "-x" : nil, *config.paths, *excludes].compact
+    [
+      "backup",
+      config.one_fs ? "-x" : nil,
+      *config.paths,
+      *excludes
+    ].compact
+  end
+
+  def command_check
+    config = @config.check_config
+    raise MissingConfigError, "Command `check` misses it's configuration" if config.nil?
+
+    [
+      "check",
+      config.check_unused ? "--check-unused" : nil,
+      read_data_subset(config),
+      config.with_cache ? "--with-cache" : nil
+    ].compact
+  end
+
+  def read_data_subset(config)
+    return nil if config.read_data_subset.nil?
+    return "--read-data" if config.read_data_subset == 100
+
+    "--read-data-subset=#{config.read_data_subset}%"
   end
 end

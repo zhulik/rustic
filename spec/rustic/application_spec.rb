@@ -49,7 +49,7 @@ RSpec.describe Rustic::Application do
     context "when the command is unknown" do
       let(:argv) { ["unknown"] }
 
-      include_examples "raises an exception", described_class::UnknownCommandError
+      include_examples "raises an exception", Rustic::Script::CommandBuilder::UnknownCommandError
     end
   end
 end

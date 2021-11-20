@@ -47,8 +47,9 @@ RSpec.describe Rustic::Script::BackupConfig do
 
   describe "#one_fs!" do
     it "assigns the one_fs flag" do
-      config.one_fs!
-      expect(config.one_fs).to be_truthy
+      expect do
+        config.one_fs!
+      end.to change(config, :one_fs).from(false).to(true)
     end
   end
 end
