@@ -1,32 +1,37 @@
+#!/bin/env ruby
 # frozen_string_literal: true
 
-repository "tmp/repository"
+require "rustic"
 
-password "password"
+Rustic.define do
+  repository "tmp/repository"
 
-before do
-  logger.info(self, "BEFORE")
-end
+  password "password"
 
-backup do
-  one_fs!
+  before do
+    logger.info(self, "BEFORE")
+  end
 
-  before do |exists|
-    logger.info(self, "BEFORE BACKUP #{exists}")
+  backup do
+    one_fs!
+
+    before do |exists|
+      logger.info(self, "BEFORE BACKUP #{exists}")
+    end
+
+    after do
+      logger.info(self, "AFTER BACKUP")
+    end
+
+    backup "lib"
+    exclude "lib/rustic"
   end
 
   after do
-    logger.info(self, "AFTER BACKUP")
+    logger.info(self, "AFTER")
   end
 
-  backup "lib"
-  exclude "lib/rustic"
-end
-
-after do
-  logger.info(self, "AFTER")
-end
-
-on_error do |error|
-  logger.warn(self, "ERROR:", error)
+  on_error do |error|
+    logger.warn(self, "ERROR:", error)
+  end
 end

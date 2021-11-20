@@ -1,39 +1,56 @@
 # frozen_string_literal: true
 
 RSpec.describe Rustic::Application do
-  let(:cli) { described_class.new(argv) }
+  let(:cli) { described_class.new(config) }
+  let(:config) { instance_double(Rustic::Script::Config, repository: "repository", password: password, restic_path: "restic", backup_config: backup_config) }
+  let(:password) { "password" }
+  let(:password_file) { nil }
+  let(:backup_config) { nil }
 
   describe "#run" do
-    subject { cli.run }
+    subject { cli.run(argv) }
 
-    context "when the command is script" do
-      let(:argv) { ["script", "backup.rb"] }
-      let(:evaluator) { instance_double(Rustic::Script::Evaluator, evaluate: true) }
-      let(:reader) { instance_double(Rustic::Script::Reader, read: config) }
-      let(:config) { instance_double(Rustic::Script::Config) }
+    let(:wrapper) { instance_double(Rustic::Wrapper, run: true) }
 
-      before do
-        allow(Rustic::Script::Reader).to receive(:new).with("backup.rb").and_return(reader)
-        allow(Rustic::Script::Evaluator).to receive(:new).with(config).and_return(evaluator)
-      end
+    context "when the command is snapshots" do
+      let(:argv) { ["snapshots"] }
 
-      it "calls Rustic::Script::Evaluator#evaluate" do
+      it "calls Rustic::Wrapper#run" do
+        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "snapshots"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
         subject
-        expect(evaluator).to have_received(:evaluate)
+        expect(wrapper).to have_received(:run)
       end
     end
 
-    context "when the command is not script" do
-      let(:argv) { ["--help"] }
-      let(:wrapper) { instance_double(Rustic::Wrapper, run: true) }
+    context "when the command is backup" do
+      let(:argv) { ["backup"] }
 
-      before do
-        allow(Rustic::Wrapper).to receive(:new).with(["restic", "--help"]).and_return(wrapper)
-      end
+      let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: true, paths: ["/home"], excluded_paths: []) }
 
       it "calls Rustic::Wrapper#run" do
+        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "backup", "-x", "/home"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
         subject
         expect(wrapper).to have_received(:run)
+      end
+    end
+
+    context "when the command is nil" do
+      let(:argv) { [] }
+
+      let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: true, paths: ["/home"], excluded_paths: []) }
+
+      it "calls Rustic::Wrapper#run" do
+        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "backup", "-x", "/home"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
+        subject
+        expect(wrapper).to have_received(:run)
+      end
+    end
+
+    context "when the command is unknown" do
+      let(:argv) { ["unknown"] }
+
+      it "raises an exception" do
+        expect { subject }.to raise_error(Rustic::Application::UnknownCommandError)
       end
     end
   end
