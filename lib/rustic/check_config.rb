@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Rustic::Script::CheckConfig
-  include Rustic::Script::HooksExt
+class Rustic::CheckConfig
+  include Rustic::HooksExt
 
   attr_reader :check_unused, :read_data_subset, :with_cache
 

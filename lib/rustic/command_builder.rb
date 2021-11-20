@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Rustic::Script::CommandBuilder
+class Rustic::CommandBuilder
   class UnknownPasswordMethodError < Rustic::Error; end
   class UnknownCommandError < Rustic::Error; end
   class MissingConfigError < Rustic::Error; end

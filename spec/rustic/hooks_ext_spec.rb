@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-RSpec.describe Rustic::Script::HooksExt do
+RSpec.describe Rustic::HooksExt do
   let(:klass) do
     Class.new do
-      include Rustic::Script::HooksExt
+      include Rustic::HooksExt
     end
   end
   let(:config) { klass.new }

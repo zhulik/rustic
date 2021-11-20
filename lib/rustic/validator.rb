@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Rustic::Script::Validator
+class Rustic::Validator
   def initialize(config)
     @config = config
   end

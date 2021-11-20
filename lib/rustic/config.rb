@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Rustic::Script::Config
-  include Rustic::Script::HooksExt
+class Rustic::Config
+  include Rustic::HooksExt
 
   attr_reader :restic_path, :backup_config, :check_config, :strict_validation
 
@@ -39,12 +39,12 @@ class Rustic::Script::Config
   end
 
   def backup(&block)
-    @backup_config ||= Rustic::Script::BackupConfig.new
+    @backup_config ||= Rustic::BackupConfig.new
     @backup_config.instance_eval(&block)
   end
 
   def check(&block)
-    @check_config ||= Rustic::Script::CheckConfig.new
+    @check_config ||= Rustic::CheckConfig.new
     @check_config.instance_eval(&block) unless block.nil?
   end
 

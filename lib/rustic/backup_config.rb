@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Rustic::Script::BackupConfig
-  include Rustic::Script::HooksExt
+class Rustic::BackupConfig
+  include Rustic::HooksExt
 
   attr_reader :paths, :excluded_paths, :one_fs
 

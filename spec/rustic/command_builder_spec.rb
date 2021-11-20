@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe Rustic::Script::CommandBuilder do
+RSpec.describe Rustic::CommandBuilder do
   let(:builder) { described_class.new(command, config) }
-  let(:config) { instance_double(Rustic::Script::Config, repository: "repository", password: password, password_file: password_file, restic_path: "restic", backup_config: backup_config, check_config: check_config) }
+  let(:config) { instance_double(Rustic::Config, repository: "repository", password: password, password_file: password_file, restic_path: "restic", backup_config: backup_config, check_config: check_config) }
 
   let(:password) { "password" }
   let(:password_file) { nil }
@@ -55,7 +55,7 @@ RSpec.describe Rustic::Script::CommandBuilder do
       end
 
       context "when backup is configred" do
-        let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: one_fs, paths: paths, excluded_paths: excluded_paths) }
+        let(:backup_config) { instance_double(Rustic::BackupConfig, one_fs: one_fs, paths: paths, excluded_paths: excluded_paths) }
         let(:one_fs) { false }
         let(:paths) { ["/", "/home"] }
         let(:excluded_paths) { ["/usr", "var"] }
@@ -100,7 +100,7 @@ RSpec.describe Rustic::Script::CommandBuilder do
       end
 
       context "when check is configured" do
-        let(:check_config) { instance_double(Rustic::Script::CheckConfig, check_unused: check_unused, read_data_subset: read_data_subset, with_cache: with_cache) }
+        let(:check_config) { instance_double(Rustic::CheckConfig, check_unused: check_unused, read_data_subset: read_data_subset, with_cache: with_cache) }
         let(:check_unused) { false }
         let(:read_data_subset) { nil }
         let(:with_cache) { nil }

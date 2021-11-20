@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Rustic::Script::Hooks
+class Rustic::Hooks
   def initialize(config)
     @before = config.before
     @after = config.after

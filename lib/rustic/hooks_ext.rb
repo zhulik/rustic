@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Rustic::Script::HooksExt
+module Rustic::HooksExt
   include Console
 
   def before(&block)

@@ -16,7 +16,7 @@ module Rustic
   class << self
     def define(run: true, &block)
       Sync do
-        config = Rustic::Script::Config.new
+        config = Rustic::Config.new
         config.instance_eval(&block)
         validate!(config)
         Rustic::Application.new(config).tap do |app|
@@ -28,7 +28,7 @@ module Rustic
     private
 
     def validate!(config)
-      errors, warnings = Rustic::Script::Validator.new(config).validate
+      errors, warnings = Rustic::Validator.new(config).validate
       warnings.each do |warning|
         # TODO: print warning
       end
