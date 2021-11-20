@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe Rustic::Script::Hooks do
+RSpec.describe Rustic::Hooks do
   let(:hooks) { described_class.new(config) }
-  let(:config) { instance_double(Rustic::Script::Config, before: before_hook, after: after_hook) }
+  let(:config) { instance_double(Rustic::Config, before: before_hook, after: after_hook) }
   let(:before_hook) { instance_double(Proc, call: true) }
   let(:after_hook) { instance_double(Proc, call: true) }
 

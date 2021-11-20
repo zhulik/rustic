@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Rustic::Script::Evaluator
+class Rustic::Evaluator
   include Console
 
   def initialize(config) = @config = config
@@ -18,10 +18,10 @@ class Rustic::Script::Evaluator
 
   def backup!
     with_hooks(@config.backup_config) do
-      command, env = Rustic::Script::CommandBuilder.new("backup", @config).build
+      command, env = Rustic::CommandBuilder.new("backup", @config).build
       Rustic::Wrapper.new(command, env).run
     end
   end
 
-  def with_hooks(config, args = nil, &block) = Rustic::Script::Hooks.new(config).with_hooks(args, &block)
+  def with_hooks(config, args = nil, &block) = Rustic::Hooks.new(config).with_hooks(args, &block)
 end

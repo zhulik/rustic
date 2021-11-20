@@ -9,7 +9,7 @@ class Rustic::Application
 
   def run(argv)
     command = argv.first || "backup"
-    command, env = Rustic::Script::CommandBuilder.new(command, @config).build
+    command, env = Rustic::CommandBuilder.new(command, @config).build
     Rustic::Wrapper.new(command, env).run
   end
 end

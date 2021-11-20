@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Rustic::Script::CheckConfig do
+RSpec.describe Rustic::Configs::Check do
   let(:config) { described_class.new }
 
   describe "defaults" do

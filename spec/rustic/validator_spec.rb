@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe Rustic::Script::Validator do
+RSpec.describe Rustic::Validator do
   let(:validator) { described_class.new(config) }
-  let(:config) { instance_double(Rustic::Script::Config, repository: repository, password: password, password_file: password_file, restic_path: restic_path, backup_config: backup_config, strict_validation: strict) }
+  let(:config) { instance_double(Rustic::Config, repository: repository, password: password, password_file: password_file, restic_path: restic_path, backup_config: backup_config, strict_validation: strict) }
 
   let(:restic_path) { "restic" }
   let(:repository) { "repository" }
@@ -38,7 +38,7 @@ RSpec.describe Rustic::Script::Validator do
         let(:strict) { true }
 
         context "when backup and exclude paths are sorted and have no duplicates" do
-          let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: true, paths: ["/", "/home"], excluded_paths: ["/etc", "/var"]) }
+          let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: true, paths: ["/", "/home"], excluded_paths: ["/etc", "/var"]) }
 
           it "returns no errors" do
             expect(subject.first).to be_empty
@@ -50,7 +50,7 @@ RSpec.describe Rustic::Script::Validator do
         end
 
         context "when backup and exclude paths are not sorted but have no duplicates" do
-          let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: true, paths: ["/home", "/"], excluded_paths: ["/var", "/etc"]) }
+          let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: true, paths: ["/home", "/"], excluded_paths: ["/var", "/etc"]) }
 
           it "returns errors" do
             expect(subject.first).to eq(["backup paths must be alphabetically sorted", "excluded paths must be alphabetically sorted"])
@@ -62,7 +62,7 @@ RSpec.describe Rustic::Script::Validator do
         end
 
         context "when backup and exclude paths are not sorted and have duplicates" do
-          let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: true, paths: ["/", "/home", "/"], excluded_paths: ["/etc", "/var", "/etc"]) }
+          let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: true, paths: ["/", "/home", "/"], excluded_paths: ["/etc", "/var", "/etc"]) }
 
           it "returns errors" do
             expect(subject.first).to eq(["backup paths must be alphabetically sorted", "backup paths contain duplicates", "excluded paths must be alphabetically sorted", "excluded paths contain duplicates"])
@@ -78,7 +78,7 @@ RSpec.describe Rustic::Script::Validator do
         let(:strict) { false }
 
         context "when backup and exclude paths are sorted and have no duplicates" do
-          let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: true, paths: ["/", "/home"], excluded_paths: ["/etc", "/var"]) }
+          let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: true, paths: ["/", "/home"], excluded_paths: ["/etc", "/var"]) }
 
           it "returns no errors" do
             expect(subject.first).to be_empty
@@ -90,7 +90,7 @@ RSpec.describe Rustic::Script::Validator do
         end
 
         context "when backup and exclude paths are not sorted but have no duplicates" do
-          let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: true, paths: ["/home", "/"], excluded_paths: ["/var", "/etc"]) }
+          let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: true, paths: ["/home", "/"], excluded_paths: ["/var", "/etc"]) }
 
           it "returns no errors" do
             expect(subject.first).to be_empty
@@ -102,7 +102,7 @@ RSpec.describe Rustic::Script::Validator do
         end
 
         context "when backup and exclude paths are not sorted and have duplicates" do
-          let(:backup_config) { instance_double(Rustic::Script::BackupConfig, one_fs: true, paths: ["/", "/home", "/"], excluded_paths: ["/etc", "/var", "/etc"]) }
+          let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: true, paths: ["/", "/home", "/"], excluded_paths: ["/etc", "/var", "/etc"]) }
 
           it "returns no errors" do
             expect(subject.first).to be_empty
