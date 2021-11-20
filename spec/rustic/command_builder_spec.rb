@@ -55,7 +55,7 @@ RSpec.describe Rustic::CommandBuilder do
       end
 
       context "when backup is configred" do
-        let(:backup_config) { instance_double(Rustic::BackupConfig, one_fs: one_fs, paths: paths, excluded_paths: excluded_paths) }
+        let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: one_fs, paths: paths, excluded_paths: excluded_paths) }
         let(:one_fs) { false }
         let(:paths) { ["/", "/home"] }
         let(:excluded_paths) { ["/usr", "var"] }
@@ -100,7 +100,7 @@ RSpec.describe Rustic::CommandBuilder do
       end
 
       context "when check is configured" do
-        let(:check_config) { instance_double(Rustic::CheckConfig, check_unused: check_unused, read_data_subset: read_data_subset, with_cache: with_cache) }
+        let(:check_config) { instance_double(Rustic::Configs::Check, check_unused: check_unused, read_data_subset: read_data_subset, with_cache: with_cache) }
         let(:check_unused) { false }
         let(:read_data_subset) { nil }
         let(:with_cache) { nil }

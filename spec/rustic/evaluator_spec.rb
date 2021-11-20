@@ -46,7 +46,7 @@ RSpec.describe Rustic::Evaluator do
     end
 
     context "when backup configured" do
-      let(:backup_config) { instance_double(Rustic::BackupConfig, before: before_backup_hook, after: after_backup_hook, paths: ["/"], one_fs: true, excluded_paths: []) }
+      let(:backup_config) { instance_double(Rustic::Configs::Backup, before: before_backup_hook, after: after_backup_hook, paths: ["/"], one_fs: true, excluded_paths: []) }
 
       let(:before_backup_hook) { instance_double(Proc, call: true) }
       let(:after_backup_hook) { instance_double(Proc, call: true) }

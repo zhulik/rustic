@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Rustic::BackupConfig do
+RSpec.describe Rustic::Configs::Backup do
   let(:config) { described_class.new }
 
   describe "defaults" do

@@ -39,12 +39,12 @@ class Rustic::Config
   end
 
   def backup(&block)
-    @backup_config ||= Rustic::BackupConfig.new
+    @backup_config ||= Rustic::Configs::Backup.new
     @backup_config.instance_eval(&block)
   end
 
   def check(&block)
-    @check_config ||= Rustic::CheckConfig.new
+    @check_config ||= Rustic::Configs::Check.new
     @check_config.instance_eval(&block) unless block.nil?
   end
 

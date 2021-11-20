@@ -25,7 +25,7 @@ RSpec.describe Rustic::Application do
     context "when the command is backup" do
       let(:argv) { ["backup"] }
 
-      let(:backup_config) { instance_double(Rustic::BackupConfig, one_fs: true, paths: ["/home"], excluded_paths: []) }
+      let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: true, paths: ["/home"], excluded_paths: []) }
 
       it "calls Rustic::Wrapper#run" do
         allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "backup", "-x", "/home"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
@@ -37,7 +37,7 @@ RSpec.describe Rustic::Application do
     context "when the command is nil" do
       let(:argv) { [] }
 
-      let(:backup_config) { instance_double(Rustic::BackupConfig, one_fs: true, paths: ["/home"], excluded_paths: []) }
+      let(:backup_config) { instance_double(Rustic::Configs::Backup, one_fs: true, paths: ["/home"], excluded_paths: []) }
 
       it "calls Rustic::Wrapper#run" do
         allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "backup", "-x", "/home"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)

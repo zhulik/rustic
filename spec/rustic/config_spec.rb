@@ -55,7 +55,7 @@ RSpec.describe Rustic::Config do
     it "assigns backup config" do
       expect do
         config.backup { "TEST" }
-      end.to change(config, :backup_config).from(nil).to(Rustic::BackupConfig)
+      end.to change(config, :backup_config).from(nil).to(Rustic::Configs::Backup)
     end
 
     it "yields control" do
@@ -78,7 +78,7 @@ RSpec.describe Rustic::Config do
       it "assigns backup config" do
         expect do
           config.check { "TEST" }
-        end.to change(config, :check_config).from(nil).to(Rustic::CheckConfig)
+        end.to change(config, :check_config).from(nil).to(Rustic::Configs::Check)
       end
 
       it "yields control" do
@@ -92,7 +92,7 @@ RSpec.describe Rustic::Config do
       it "assigns backup config" do
         expect do
           config.check
-        end.to change(config, :check_config).from(nil).to(Rustic::CheckConfig)
+        end.to change(config, :check_config).from(nil).to(Rustic::Configs::Check)
       end
     end
   end
