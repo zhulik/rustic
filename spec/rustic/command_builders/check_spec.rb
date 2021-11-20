@@ -11,7 +11,9 @@ RSpec.describe Rustic::CommandBuilders::Check do
     context "when check is not configured" do
       let(:check_config) { nil }
 
-      include_examples "raises an exception", Rustic::CommandBuilder::MissingConfigError, "Command `check` misses it's configuration"
+      it "returns a command" do
+        expect(subject).to eq(["check"])
+      end
     end
 
     context "when check is configured" do
