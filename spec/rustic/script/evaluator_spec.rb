@@ -34,9 +34,13 @@ RSpec.describe Rustic::Script::Evaluator do
         expect { subject }.not_to raise_error
       end
 
-      it "calls before and after hooks" do # rubocop:disable RSpec/MultipleExpectations
+      it "calls the before hook" do
         subject
         expect(before_hook).to have_received(:call)
+      end
+
+      it "calls the after hook" do
+        subject
         expect(after_hook).to have_received(:call)
       end
     end
@@ -60,9 +64,13 @@ RSpec.describe Rustic::Script::Evaluator do
         expect(wrapper).to have_received(:run).once
       end
 
-      it "calls before and after hooks" do # rubocop:disable RSpec/MultipleExpectations
+      it "calls the before hook" do
         subject
         expect(before_hook).to have_received(:call)
+      end
+
+      it "calls the after hook" do
+        subject
         expect(after_hook).to have_received(:call)
       end
     end

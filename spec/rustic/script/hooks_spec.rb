@@ -14,9 +14,13 @@ RSpec.describe Rustic::Script::Hooks do
 
       include_examples "raises an exception", ArgumentError
 
-      it "does not call any hooks" do # rubocop:disable RSpec/MultipleExpectations
+      it "does not call the before hook" do
         subject rescue nil # rubocop:disable Style/RescueModifier
         expect(before_hook).not_to have_received(:call)
+      end
+
+      it "does not call the after hook" do
+        subject rescue nil # rubocop:disable Style/RescueModifier
         expect(after_hook).not_to have_received(:call)
       end
     end
@@ -28,9 +32,13 @@ RSpec.describe Rustic::Script::Hooks do
         end.to yield_control.once
       end
 
-      it "calls before and after hooks" do # rubocop:disable RSpec/MultipleExpectations
-        hooks.with_hooks { "TEST" }
+      it "calls the before hook" do
+        subject
         expect(before_hook).to have_received(:call)
+      end
+
+      it "calls the after hook" do
+        subject
         expect(after_hook).to have_received(:call)
       end
     end
@@ -74,9 +82,13 @@ RSpec.describe Rustic::Script::Hooks do
 
       include_examples "raises an exception", RuntimeError
 
-      it "calls the before hook, but does not call the after hook" do # rubocop:disable RSpec/MultipleExpectations
+      it "calls the before hook" do
         subject rescue nil # rubocop:disable Style/RescueModifier
         expect(before_hook).to have_received(:call)
+      end
+
+      it "does not call the after hook" do
+        subject rescue nil # rubocop:disable Style/RescueModifier
         expect(after_hook).not_to have_received(:call)
       end
     end
