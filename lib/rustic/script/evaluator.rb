@@ -8,19 +8,12 @@ class Rustic::Script::Evaluator
   end
 
   def evaluate
-    check!
-
     with_hooks(@config) do
       backup! unless @config.backup_config.nil?
     end
   rescue StandardError => e
     on_error(e)
     raise
-  end
-
-  def check!
-    command, env = Rustic::Script::CommandBuilder.new("snapshots", @config).build
-    Rustic::Wrapper.new(command, env).run
   end
 
   def on_error(error)

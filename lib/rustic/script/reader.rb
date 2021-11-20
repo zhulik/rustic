@@ -11,7 +11,7 @@ class Rustic::Script::Reader
   def read
     Rustic::Script::Config.new.tap do |config|
       config.instance_eval(script)
-      Rustic::Script::Validator.new(@config).validate!
+      Rustic::Script::Validator.new(config).validate!
     end
   rescue SyntaxError, NameError
     raise EvaluationError

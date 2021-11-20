@@ -11,3 +11,18 @@ loader.setup
 # Your code goes here...
 class Rustic::Error < StandardError
 end
+
+module Rustic
+  class << self
+    def define(run: true, &block)
+      Sync do
+        config = Rustic::Script::Config.new
+        config.instance_eval(&block)
+        Rustic::Script::Validator.new(config).validate!
+        Rustic::Application.new(config).tap do |app|
+          app.run(ARGV) if run
+        end
+      end
+    end
+  end
+end

@@ -12,20 +12,19 @@ RSpec.describe Rustic::Script::Evaluator do
   describe "#evaluate" do
     subject { evaluator.evaluate }
 
-    context "when check wrapper raises an error" do
+    context "when before hook raises an exception" do
       before do
-        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "./repository", "snapshots"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
-        allow(wrapper).to receive(:run).and_raise(Rustic::Wrapper::ExitStatusError)
+        allow(before_hook).to receive(:call).and_raise(RuntimeError)
       end
 
       it "raises an exception" do
-        expect { subject }.to raise_error(Rustic::Wrapper::ExitStatusError)
+        expect { subject }.to raise_error(RuntimeError)
       end
 
       it "calls the on_error hook" do
         begin
           subject
-        rescue Rustic::Wrapper::ExitStatusError
+        rescue RuntimeError
           nil
         end
         expect(on_error).to have_received(:call)
@@ -33,10 +32,6 @@ RSpec.describe Rustic::Script::Evaluator do
     end
 
     context "when backup is not configured" do
-      before do
-        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "./repository", "snapshots"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
-      end
-
       it "does not raise an exception" do
         expect { subject }.not_to raise_error
       end
@@ -64,7 +59,7 @@ RSpec.describe Rustic::Script::Evaluator do
 
       it "calls Rustic::Wrapper twice" do
         subject
-        expect(wrapper).to have_received(:run).twice
+        expect(wrapper).to have_received(:run).once
       end
 
       it "calls before and after hooks" do # rubocop:disable RSpec/MultipleExpectations

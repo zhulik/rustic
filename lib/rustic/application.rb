@@ -1,18 +1,29 @@
 # frozen_string_literal: true
 
 class Rustic::Application
-  def initialize(argv)
-    @argv = argv
+  class UnknownCommandError < Rustic::Error; end
+
+  def initialize(config)
+    @config = config
   end
 
-  def run
-    case @argv.first
-    when "script"
-      config = Rustic::Script::Reader.new(@argv[1]).read
-      Rustic::Script::Evaluator.new(config).evaluate
+  def run(argv)
+    command = argv.first || "backup"
+    command_method = "command_#{command}"
+    return send(command_method) if respond_to?(command_method, true)
 
-    else
-      Rustic::Wrapper.new(["restic", *@argv]).run
-    end
+    raise UnknownCommandError, "Unknown command #{command}"
+  end
+
+  private
+
+  def command_snapshots
+    command, env = Rustic::Script::CommandBuilder.new("snapshots", @config).build
+    Rustic::Wrapper.new(command, env).run
+  end
+
+  def command_backup
+    command, env = Rustic::Script::CommandBuilder.new("backup", @config).build
+    Rustic::Wrapper.new(command, env).run
   end
 end
