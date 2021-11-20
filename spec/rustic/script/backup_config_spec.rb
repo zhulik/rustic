@@ -22,9 +22,9 @@ RSpec.describe Rustic::Script::BackupConfig do
     end
 
     context "when arguments are not passed" do
-      it "raises ArgumentError" do
-        expect { config.backup }.to raise_error(ArgumentError)
-      end
+      subject { config.backup }
+
+      include_examples "raises an exception", ArgumentError
     end
   end
 
@@ -39,9 +39,9 @@ RSpec.describe Rustic::Script::BackupConfig do
     end
 
     context "when arguments are not passed" do
-      it "raises ArgumentError" do
-        expect { config.exclude }.to raise_error(ArgumentError)
-      end
+      subject { config.exclude }
+
+      include_examples "raises an exception", ArgumentError
     end
   end
 

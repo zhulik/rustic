@@ -17,9 +17,7 @@ RSpec.describe Rustic::Script::Evaluator do
         allow(before_hook).to receive(:call).and_raise(RuntimeError)
       end
 
-      it "raises an exception" do
-        expect { subject }.to raise_error(RuntimeError)
-      end
+      include_examples "raises an exception", RuntimeError
 
       it "calls the on_error hook" do
         begin

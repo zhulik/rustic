@@ -49,9 +49,7 @@ RSpec.describe Rustic::Application do
     context "when the command is unknown" do
       let(:argv) { ["unknown"] }
 
-      it "raises an exception" do
-        expect { subject }.to raise_error(Rustic::Application::UnknownCommandError)
-      end
+      include_examples "raises an exception", described_class::UnknownCommandError
     end
   end
 end

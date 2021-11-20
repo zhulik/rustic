@@ -13,9 +13,7 @@ RSpec.describe Rustic::Script::CommandBuilder do
     context "when the command is unknown" do
       let(:command) { "unknown" }
 
-      it "raises an exception" do
-        expect { subject }.to raise_error(described_class::UnknownCommandError)
-      end
+      include_examples "raises an exception", described_class::UnknownCommandError
     end
 
     context "when the command is snapshots" do
@@ -40,9 +38,7 @@ RSpec.describe Rustic::Script::CommandBuilder do
         let(:password) { nil }
         let(:password_file) { nil }
 
-        it "raises an exception" do
-          expect { subject }.to raise_error(described_class::UnknownPasswordMethodError)
-        end
+        include_examples "raises an exception", described_class::UnknownPasswordMethodError
       end
     end
 
@@ -56,9 +52,7 @@ RSpec.describe Rustic::Script::CommandBuilder do
       context "when backup is not configured" do
         let(:backup_config) { nil }
 
-        it "raises an exception" do
-          expect { subject }.to raise_error(described_class::MissingConfigError, "Command `backup` misses it's configuration")
-        end
+        include_examples "raises an exception", described_class::MissingConfigError, "Command `backup` misses it's configuration"
       end
 
       context "when backup is configred" do
@@ -73,9 +67,7 @@ RSpec.describe Rustic::Script::CommandBuilder do
         context "when paths is empty" do
           let(:paths) { [] }
 
-          it "raises an exception" do
-            expect { subject }.to raise_error(described_class::MalformedConfigError, "Backup paths cannot be empty")
-          end
+          include_examples "raises an exception", described_class::MalformedConfigError, "Backup paths cannot be empty"
         end
 
         context "when excuded paths is empty" do

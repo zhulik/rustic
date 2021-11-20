@@ -41,9 +41,7 @@ RSpec.describe Rustic::Script::Reader do
           )
         end
 
-        it "raises an exception" do
-          expect { subject }.to raise_error(described_class::EvaluationError)
-        end
+        include_examples "raises an exception", described_class::EvaluationError
       end
 
       context "when the file contains ruby error" do
@@ -53,9 +51,7 @@ RSpec.describe Rustic::Script::Reader do
           )
         end
 
-        it "raises an exception" do
-          expect { subject }.to raise_error(described_class::EvaluationError)
-        end
+        include_examples "raises an exception", described_class::EvaluationError
       end
 
       context "when the file is not in ruby" do
@@ -66,24 +62,18 @@ RSpec.describe Rustic::Script::Reader do
           )
         end
 
-        it "raises an exception" do
-          expect { subject }.to raise_error(described_class::EvaluationError)
-        end
+        include_examples "raises an exception", described_class::EvaluationError
       end
 
       context "when the file contais binary data" do
         let(:script) { SecureRandom.random_bytes }
 
-        it "raises an exception" do
-          expect { subject }.to raise_error(described_class::EvaluationError)
-        end
+        include_examples "raises an exception", described_class::EvaluationError
       end
     end
 
     context "when file does not exist" do
-      it "raises an exception" do
-        expect { subject }.to raise_error(described_class::FileReadingError)
-      end
+      include_examples "raises an exception", described_class::FileReadingError
     end
   end
 end
