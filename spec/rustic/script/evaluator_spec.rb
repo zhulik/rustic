@@ -12,6 +12,25 @@ RSpec.describe Rustic::Script::Evaluator do
   describe "#evaluate" do
     subject { evaluator.evaluate }
 
+    context "when before hook raises an exception" do
+      before do
+        allow(before_hook).to receive(:call).and_raise(RuntimeError)
+      end
+
+      it "raises an exception" do
+        expect { subject }.to raise_error(RuntimeError)
+      end
+
+      it "calls the on_error hook" do
+        begin
+          subject
+        rescue RuntimeError
+          nil
+        end
+        expect(on_error).to have_received(:call)
+      end
+    end
+
     context "when backup is not configured" do
       it "does not raise an exception" do
         expect { subject }.not_to raise_error
