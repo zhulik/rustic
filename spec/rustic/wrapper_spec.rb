@@ -25,9 +25,7 @@ RSpec.describe Rustic::Wrapper do
         allow(Async::Process).to receive(:spawn).with(env_variables, *argv).and_return(status)
       end
 
-      it "raises an exception" do
-        expect { subject }.to raise_error(described_class::ExitStatusError, "Exit status is not 0: 1")
-      end
+      include_examples "raises an exception", described_class::ExitStatusError, "Exit status is not 0: 1"
     end
 
     context "when command not found" do
@@ -35,9 +33,7 @@ RSpec.describe Rustic::Wrapper do
         allow(Async::Process).to receive(:spawn).with(env_variables, *argv).and_raise(Errno::ENOENT)
       end
 
-      it "raises an exception" do
-        expect { subject }.to raise_error(described_class::ExecutionError)
-      end
+      include_examples "raises an exception", described_class::ExecutionError
     end
   end
 end

@@ -17,9 +17,7 @@ RSpec.describe Rustic::Script::Evaluator do
         allow(before_hook).to receive(:call).and_raise(RuntimeError)
       end
 
-      it "raises an exception" do
-        expect { subject }.to raise_error(RuntimeError)
-      end
+      include_examples "raises an exception", RuntimeError
 
       it "calls the on_error hook" do
         begin
@@ -36,9 +34,13 @@ RSpec.describe Rustic::Script::Evaluator do
         expect { subject }.not_to raise_error
       end
 
-      it "calls before and after hooks" do # rubocop:disable RSpec/MultipleExpectations
+      it "calls the before hook" do
         subject
         expect(before_hook).to have_received(:call)
+      end
+
+      it "calls the after hook" do
+        subject
         expect(after_hook).to have_received(:call)
       end
     end
@@ -62,9 +64,13 @@ RSpec.describe Rustic::Script::Evaluator do
         expect(wrapper).to have_received(:run).once
       end
 
-      it "calls before and after hooks" do # rubocop:disable RSpec/MultipleExpectations
+      it "calls the before hook" do
         subject
         expect(before_hook).to have_received(:call)
+      end
+
+      it "calls the after hook" do
+        subject
         expect(after_hook).to have_received(:call)
       end
     end
