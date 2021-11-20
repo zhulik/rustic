@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "async-process", "~> 1.3"
+  spec.add_dependency "ptools", "~> 1.4"
   spec.add_dependency "zeitwerk", "~> 2.5"
 
   # For more information and examples about making a new gem, checkout our
