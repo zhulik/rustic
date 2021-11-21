@@ -3,11 +3,19 @@
 class Rustic::Evaluator
   include Console
 
-  def initialize(config) = @config = config
+  def initialize(command, config)
+    @command = command
+    @config = config
+  end
 
   def evaluate
     with_hooks(@config) do
-      backup! unless @config.backup_config.nil?
+      builder = Rustic::CommandBuilder.new(@command, @config)
+      command, env, config = builder.build
+
+      with_hooks(config) do
+        Rustic::Wrapper.new(command, env).run
+      end
     end
   rescue StandardError => e
     on_error(e)
@@ -15,13 +23,5 @@ class Rustic::Evaluator
   end
 
   def on_error(error) = @config.on_error&.call(error)
-
-  def backup!
-    with_hooks(@config.backup_config) do
-      command, env = Rustic::CommandBuilder.new("backup", @config).build
-      Rustic::Wrapper.new(command, env).run
-    end
-  end
-
   def with_hooks(config, args = nil, &block) = Rustic::Hooks.new(config).with_hooks(args, &block)
 end

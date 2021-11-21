@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Rustic::Evaluator do
-  let(:evaluator) { described_class.new(config) }
+  let(:evaluator) { described_class.new(command, config) }
+  let(:command) { "backup" }
   let(:config) { instance_double(Rustic::Config, repository: "./repository", password: "password", restic_path: "restic", on_error: on_error, before: before_hook, after: after_hook, backup_config: backup_config) }
   let(:wrapper) { instance_double(Rustic::Wrapper, run: true) }
   let(:on_error) { instance_double(Proc, call: true) }
@@ -30,18 +31,16 @@ RSpec.describe Rustic::Evaluator do
     end
 
     context "when backup is not configured" do
-      it "does not raise an exception" do
-        expect { subject }.not_to raise_error
-      end
+      include_examples "raises an exception", Rustic::CommandBuilder::MissingConfigError, "Command `backup` misses it's configuration"
 
       it "calls the before hook" do
-        subject
+        subject rescue nil # rubocop:disable Style/RescueModifier
         expect(before_hook).to have_received(:call)
       end
 
-      it "calls the after hook" do
-        subject
-        expect(after_hook).to have_received(:call)
+      it "does not call the after hook" do
+        subject rescue nil # rubocop:disable Style/RescueModifier
+        expect(after_hook).not_to have_received(:call)
       end
     end
 

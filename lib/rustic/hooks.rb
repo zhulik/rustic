@@ -2,8 +2,8 @@
 
 class Rustic::Hooks
   def initialize(config)
-    @before = config.before
-    @after = config.after
+    @before = config&.before
+    @after = config&.after
   end
 
   def with_hooks(arg = nil)

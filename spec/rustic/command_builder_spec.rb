@@ -21,7 +21,7 @@ RSpec.describe Rustic::CommandBuilder do
 
       context "when password is set" do
         it "returns a command and env variables" do
-          expect(subject).to eq([["restic", "-r", "repository", "snapshots"], { "RESTIC_PASSWORD" => "password" }])
+          expect(subject).to eq([["restic", "-r", "repository", "snapshots"], { "RESTIC_PASSWORD" => "password" }, nil])
         end
       end
 
@@ -30,7 +30,7 @@ RSpec.describe Rustic::CommandBuilder do
         let(:password_file) { "./password.txt" }
 
         it "returns a command and env variables" do
-          expect(subject).to eq([["restic", "-r", "repository", "snapshots"], { "RESTIC_PASSWORD_FILE" => "./password.txt" }])
+          expect(subject).to eq([["restic", "-r", "repository", "snapshots"], { "RESTIC_PASSWORD_FILE" => "./password.txt" }, nil])
         end
       end
 

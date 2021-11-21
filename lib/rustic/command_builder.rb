@@ -18,14 +18,14 @@ class Rustic::CommandBuilder
     add_repository_path!
     add_password!
 
-    add_command!
+    config = add_command!
 
-    [[@config.restic_path, *@args], @env_variables] # TODO: properly handle spaces in paths
+    [[@config.restic_path, *@args], @env_variables, config] # TODO: properly handle spaces in paths
   end
 
   private
 
-  def add_repository_path! = @args += ["-r", @config.repository]
+  def add_repository_path! = @args.concat(["-r", @config.repository])
 
   def add_password!
     return @env_variables.merge!("RESTIC_PASSWORD" => @config.password) if @config.password
@@ -35,8 +35,9 @@ class Rustic::CommandBuilder
   end
 
   def add_command!
-    command_class = Rustic::CommandBuilders.const_get(@command.capitalize)
-    @args.concat(command_class.new(@config).build)
+    command_builder = Rustic::CommandBuilders.const_get(@command.capitalize).new(@config)
+    @args.concat(command_builder.build)
+    command_builder.config
   rescue NameError
     raise UnknownCommandError, "Unknown command #{@command}"
   end
