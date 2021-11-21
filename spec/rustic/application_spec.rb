@@ -8,7 +8,7 @@ RSpec.describe Rustic::Application do
   let(:backup_config) { nil }
 
   describe "#run" do
-    subject { cli.run(argv) }
+    subject { cli.run(*argv) }
 
     let(:wrapper) { instance_double(Rustic::Wrapper, run: true) }
 

@@ -7,7 +7,7 @@ class Rustic::Application
     @config = config
   end
 
-  def run(argv)
+  def run(*argv)
     command = argv.first || "backup"
     Rustic::Evaluator.new(command, @config).evaluate
   end
