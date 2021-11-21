@@ -3,7 +3,7 @@
 
 require "rustic"
 
-Rustic.define do
+Rustic.define do # rubocop:disable Metrics/BlockLength
   repository "tmp/repository"
 
   password "password"
