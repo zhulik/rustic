@@ -11,6 +11,6 @@ class Rustic::Hooks
 
     @before&.call(arg)
     yield
-    @after&.call(arg) # TODO: do not call the after block if an exception was raised
+    @after&.call(arg)
   end
 end
