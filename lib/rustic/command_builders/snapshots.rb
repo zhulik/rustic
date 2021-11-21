@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Rustic::CommandBuilders::Snapshots
-  def initialize(config)
-    @config = config
-  end
+  attr_reader :config
+
+  def initialize(_config) = nil
 
   def build
     ["snapshots"]

@@ -2,8 +2,8 @@
 
 class Rustic::Hooks
   def initialize(config)
-    @before = config.before
-    @after = config.after
+    @before = config&.before
+    @after = config&.after
   end
 
   def with_hooks(arg = nil)
@@ -11,6 +11,6 @@ class Rustic::Hooks
 
     @before&.call(arg)
     yield
-    @after&.call(arg) # TODO: do not call the after block if an exception was raised
+    @after&.call(arg)
   end
 end

@@ -3,7 +3,7 @@
 
 require "rustic"
 
-Rustic.define do
+Rustic.define do # rubocop:disable Metrics/BlockLength
   repository "tmp/repository"
 
   password "password"
@@ -25,6 +25,29 @@ Rustic.define do
 
     backup "lib"
     exclude "lib/rustic"
+  end
+
+  check do
+    before do
+      logger.info(self, "BEFORE CHECK")
+    end
+
+    after do
+      logger.info(self, "AFTER CHECK")
+    end
+  end
+
+  forget do
+    before do
+      logger.info(self, "BEFORE FORGET")
+    end
+
+    after do
+      logger.info(self, "AFTER FORGET")
+    end
+
+    prune!
+    keep(last: 2, weekly: 2, monthly: 2)
   end
 
   after do
