@@ -25,10 +25,10 @@ RSpec.describe Rustic::Application do
     context "when the command is backup" do
       let(:argv) { ["backup"] }
 
-      let(:backup_config) { instance_double(Rustic::Configs::Backup, before: nil, after: nil, one_fs: true, paths: ["/home"], excluded_paths: []) }
+      let(:backup_config) { instance_double(Rustic::Configs::Backup, before: nil, after: nil, one_fs: true, paths: ["/home"], excluded_paths: [], compression_mode: "auto") }
 
       it "calls Rustic::Wrapper#run" do
-        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "backup", "-x", "/home"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
+        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "--compression", "auto", "backup", "-x", "/home"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
         subject
         expect(wrapper).to have_received(:run)
       end
@@ -37,10 +37,10 @@ RSpec.describe Rustic::Application do
     context "when the command is nil" do
       let(:argv) { [] }
 
-      let(:backup_config) { instance_double(Rustic::Configs::Backup, before: nil, after: nil, one_fs: true, paths: ["/home"], excluded_paths: []) }
+      let(:backup_config) { instance_double(Rustic::Configs::Backup, before: nil, after: nil, one_fs: true, paths: ["/home"], excluded_paths: [], compression_mode: "auto") }
 
       it "calls Rustic::Wrapper#run" do
-        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "backup", "-x", "/home"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
+        allow(Rustic::Wrapper).to receive(:new).with(["restic", "-r", "repository", "--compression", "auto", "backup", "-x", "/home"], { "RESTIC_PASSWORD" => "password" }).and_return(wrapper)
         subject
         expect(wrapper).to have_received(:run)
       end

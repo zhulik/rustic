@@ -9,7 +9,7 @@ class Rustic::Configs::Backup
     @paths = []
     @excluded_paths = []
     @one_fs = false
-    @compression_mode = 'auto'
+    @compression_mode = "auto"
   end
 
   def backup(*paths)
@@ -25,7 +25,7 @@ class Rustic::Configs::Backup
   end
 
   def one_fs! = @one_fs = true
-  
+
   def compression(value)
     @compression_mode = value
   end
