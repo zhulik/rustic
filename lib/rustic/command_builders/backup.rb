@@ -12,6 +12,8 @@ class Rustic::CommandBuilders::Backup
     raise Rustic::CommandBuilder::MalformedConfigError, "Backup paths cannot be empty" if @config.paths.empty?
 
     [
+      "--compression",
+      @config.compression_mode,
       "backup",
       @config.one_fs ? "-x" : nil,
       *@config.paths,

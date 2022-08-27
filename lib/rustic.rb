@@ -20,7 +20,7 @@ module Rustic
         config.instance_eval(&block)
         validate!(config)
         Rustic::Application.new(config).tap do |app|
-          app.run(ARGV) if run
+          app.run(*ARGV) if run
         end
       end
     end
