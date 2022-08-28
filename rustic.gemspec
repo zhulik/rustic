@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = "DSL for the restic backup tool."
   spec.homepage      = "https://github.com/zhulik/rustic"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 3.0.0", "< 3.1")
+  spec.required_ruby_version = [">= 3.0.0", "< 3.1"]
 
   spec.metadata["homepage_uri"] = spec.homepage
   # spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
