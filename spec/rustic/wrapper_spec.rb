@@ -3,7 +3,7 @@
 RSpec.describe Rustic::Wrapper do
   let(:wrapper) { described_class.new(argv, env_variables) }
   let(:argv) {  %w[some command] }
-  let(:env_variables) { { "some" => "variable" } }
+  let(:env_variables) { { "RESTIC_PROGRESS_FPS" => "1", "TERM" => "dumb", "some" => "variable" } }
 
   describe "#run" do
     subject { wrapper.run }

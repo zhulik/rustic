@@ -25,7 +25,7 @@ class Rustic::CommandBuilder
 
   private
 
-  def add_repository_path! = @args.concat(["-r", @config.repository])
+  def add_repository_path! = @args.push("-r", @config.repository)
 
   def add_password!
     return @env_variables.merge!("RESTIC_PASSWORD" => @config.password) if @config.password

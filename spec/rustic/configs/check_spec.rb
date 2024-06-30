@@ -7,7 +7,7 @@ RSpec.describe Rustic::Configs::Check do
     it "has reasonable defaults" do # rubocop:disable RSpec/MultipleExpectations
       expect(config.check_unused).to be_falsey
       expect(config.read_data_subset).to be_nil
-      expect(config.with_cache).to eq(false)
+      expect(config.with_cache).to be(false)
     end
   end
 

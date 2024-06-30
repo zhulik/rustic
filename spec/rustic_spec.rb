@@ -2,7 +2,7 @@
 
 RSpec.describe Rustic do
   it "has a version number" do
-    expect(Rustic::VERSION).not_to be nil
+    expect(Rustic::VERSION).not_to be_nil
   end
 
   describe "#define" do

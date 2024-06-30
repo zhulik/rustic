@@ -9,18 +9,18 @@ Rustic.define do # rubocop:disable Metrics/BlockLength
   password "password"
 
   before do
-    logger.info(self, "BEFORE")
+    Console.logger.info(self, "BEFORE")
   end
 
   backup do
     one_fs!
 
     before do |exists|
-      logger.info(self, "BEFORE BACKUP #{exists}")
+      Console.logger.info(self, "BEFORE BACKUP #{exists}")
     end
 
     after do
-      logger.info(self, "AFTER BACKUP")
+      Console.logger.info(self, "AFTER BACKUP")
     end
 
     backup "lib"
@@ -29,21 +29,21 @@ Rustic.define do # rubocop:disable Metrics/BlockLength
 
   check do
     before do
-      logger.info(self, "BEFORE CHECK")
+      Console.logger.info(self, "BEFORE CHECK")
     end
 
     after do
-      logger.info(self, "AFTER CHECK")
+      Console.logger.info(self, "AFTER CHECK")
     end
   end
 
   forget do
     before do
-      logger.info(self, "BEFORE FORGET")
+      Console.logger.info(self, "BEFORE FORGET")
     end
 
     after do
-      logger.info(self, "AFTER FORGET")
+      Console.logger.info(self, "AFTER FORGET")
     end
 
     prune!
@@ -51,10 +51,10 @@ Rustic.define do # rubocop:disable Metrics/BlockLength
   end
 
   after do
-    logger.info(self, "AFTER")
+    Console.logger.info(self, "AFTER")
   end
 
   on_error do |error|
-    logger.warn(self, "ERROR:", error)
+    Console.logger.warn(self, "ERROR:", error)
   end
 end

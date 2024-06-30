@@ -8,11 +8,11 @@ class Rustic::Wrapper
 
   def initialize(argv, env_variables = {})
     @argv = argv
-    @env_variables = env_variables
+    @env_variables = env_variables.merge("RESTIC_PROGRESS_FPS" => "1", "TERM" => "dumb")
   end
 
   def run
-    logger.info(self, "Executing:", @argv)
+    Console.logger.info(self, "Executing:", @argv)
     begin
       status = Async::Process.spawn(@env_variables, *@argv)
     rescue StandardError
